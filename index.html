@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Ficha Social UNCP — Entrevista Accesible</title>
+<style>
+  /* ═══════════════════════════════════════════
+     MOBILE-FIRST (base = celular)
+     Breakpoints: 480px+, 768px+, 1024px+
+     ═══════════════════════════════════════════ */
+  :root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --surface2: #1e1e1e;
+    --text: #FFD700;
+    --text-soft: #f5e6a3;
+    --white: #ffffff;
+    --btn: #FFD700;
+    --btn-text: #000;
+    --border: #FFD700;
+    --success: #00d68f;
+    --error: #ff6b6b;
+    --info: #4dabf7;
+    --muted: #888;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+    --barra-h: 52px;
+    --acciones-h: 132px;
+    --tap: 48px;
+    --gap: 10px;
+    --pad: 12px;
+    --radius: 12px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Arial, Helvetica, sans-serif;
+    font-size: 16px; /* evita zoom iOS en focus */
+    line-height: 1.5;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: rgba(255, 215, 0, 0.25);
+    padding-left: var(--safe-left);
+    padding-right: var(--safe-right);
+  }
+  img { max-width: 100%; height: auto; display: block; }
+
+  .skip-link {
+    position: absolute; left: -9999px;
+    background: var(--btn); color: var(--btn-text);
+    padding: 10px 16px; font-weight: bold; z-index: 9999;
+  }
+  .skip-link:focus { left: 8px; top: calc(8px + var(--safe-top)); }
+
+  /* —— Pantallas —— */
+  .pantalla {
+    display: none;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: calc(12px + var(--safe-top)) var(--pad) calc(24px + var(--safe-bottom));
+  }
+  .pantalla.activa { display: block; }
+  #pantalla-entrevista.activa {
+    padding-bottom: calc(var(--acciones-h) + var(--safe-bottom) + 16px);
+    padding-top: 0;
+  }
+  .contenedor {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+
+  /* —— Cabecera —— */
+  .cabecera {
+    text-align: center;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--border);
+  }
+  .logo-wrap {
+    background: #111;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    display: inline-block;
+    margin-bottom: 10px;
+    max-width: 100%;
+  }
+  .logo-wrap img {
+    width: min(200px, 70vw);
+    margin: 0 auto;
+  }
+  .cabecera h1 {
+    font-size: 1.35rem;
+    color: var(--text);
+    margin: 6px 0 2px;
+    line-height: 1.25;
+  }
+  .cabecera .subtitulo {
+    color: var(--text-soft);
+    font-size: 0.9rem;
+    font-weight: normal;
+  }
+
+  /* —— Tarjetas —— */
+  .tarjeta {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin: 12px 0;
+  }
+  .tarjeta.destacada {
+    border-color: var(--success);
+    background: #0d1f18;
+  }
+  .tarjeta h2 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .tarjeta p {
+    color: var(--text-soft);
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+  }
+  .tarjeta ul {
+    margin: 8px 0 8px 1.15em;
+    color: var(--text-soft);
+    font-size: 0.95rem;
+  }
+  .tarjeta li { margin: 6px 0; }
+
+  /* —— Botones (touch-friendly) —— */
+  button, .btn {
+    background: var(--btn);
+    color: var(--btn-text);
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 12px 14px;
+    border: 2px solid var(--btn);
+    border-radius: 10px;
+    cursor: pointer;
+    min-height: var(--tap);
+    min-width: var(--tap);
+    font-family: inherit;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+    transition: transform 0.1s, background 0.15s;
+  }
+  button:hover, button:focus, .btn:hover, .btn:focus {
+    background: var(--white);
+    outline: 3px solid var(--text);
+    outline-offset: 2px;
+  }
+  button:active { transform: scale(0.97); }
+  button.secundario {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--text);
+  }
+  button.exito {
+    background: var(--success);
+    border-color: var(--success);
+    color: #000;
+  }
+  button.peligro {
+    background: var(--error);
+    border-color: var(--error);
+    color: #fff;
+  }
+  button.voz {
+    background: var(--info);
+    border-color: var(--info);
+    color: #000;
+  }
+  button.voz.escuchando {
+    background: var(--error);
+    border-color: var(--error);
+    color: #fff;
+    animation: pulso-mic 1s infinite;
+  }
+  @keyframes pulso-mic {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,107,107,0.55); }
+    50% { box-shadow: 0 0 0 10px rgba(255,107,107,0); }
+  }
+
+  .acciones {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+    margin-top: 14px;
+  }
+  .acciones button { width: 100%; }
+  .acciones-inicio {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    margin: 18px 0 8px;
+  }
+  .acciones-inicio button {
+    width: 100%;
+    font-size: 1.05rem;
+    min-height: 54px;
+  }
+  .acciones-inicio .btn-modo-desc {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: normal;
+    margin-top: 4px;
+    opacity: 0.9;
+  }
+  .acciones-inicio button.exito .btn-modo-titulo,
+  .acciones-inicio button.secundario.btn-sin-voz .btn-modo-titulo {
+    display: block;
+    font-size: 1.05rem;
+  }
+  body.sin-lectura-voz .ctrl-solo-voz { display: none !important; }
+  body.sin-lectura-voz #btn-microfono { opacity: 0.95; }
+
+  /* —— Barra superior entrevista —— */
+  .barra-superior {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 10, 0.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--border);
+    padding: calc(6px + var(--safe-top)) var(--pad) 8px;
+  }
+  .barra-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .barra-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .barra-logo img {
+    height: 32px;
+    width: auto;
+    flex-shrink: 0;
+  }
+  .barra-logo span {
+    font-weight: bold;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .barra-controles {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .barra-controles::-webkit-scrollbar { display: none; }
+  .barra-controles button {
+    min-height: 40px;
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  /* —— Progreso —— */
+  .progreso-box {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    margin: 12px 0 10px;
+  }
+  .progreso-texto {
+    font-weight: bold;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+  .progreso-barra {
+    height: 12px;
+    background: #333;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .progreso-fill {
+    height: 100%;
+    background: var(--success);
+    width: 0%;
+    transition: width 0.35s ease;
+  }
+
+  /* —— Pregunta —— */
+  .pregunta-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin: 10px 0 0;
+  }
+  .seccion-etiqueta {
+    display: inline-block;
+    background: var(--btn);
+    color: var(--btn-text);
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    max-width: 100%;
+    line-height: 1.3;
+  }
+  .pregunta-numero {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+  }
+  .pregunta-texto {
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: var(--white);
+    margin-bottom: 6px;
+    line-height: 1.35;
+    word-wrap: break-word;
+  }
+  .pregunta-ayuda {
+    color: var(--text-soft);
+    font-size: 0.88rem;
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+  .mensaje-voz {
+    background: #0d1f18;
+    border: 2px dashed var(--success);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    margin: 10px 0;
+    font-weight: bold;
+    font-size: 0.88rem;
+    min-height: 44px;
+    color: var(--success);
+    line-height: 1.35;
+    word-break: break-word;
+  }
+  .mensaje-voz.aviso {
+    border-color: var(--info);
+    background: #0a1a2a;
+    color: var(--info);
+  }
+
+  /* —— Respuesta —— */
+  .zona-respuesta { margin-top: 4px; }
+  .zona-respuesta label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: var(--text);
+    font-size: 0.9rem;
+  }
+  input[type="text"], input[type="number"], input[type="tel"],
+  input[type="date"], select, textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 12px;
+    font-size: 16px; /* crítico: iOS no hace zoom */
+    background: #000;
+    color: var(--text);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  select {
+    background-image: linear-gradient(45deg, transparent 50%, var(--text) 50%),
+      linear-gradient(135deg, var(--text) 50%, transparent 50%);
+    background-position: calc(100% - 18px) calc(50% - 3px), calc(100% - 12px) calc(50% - 3px);
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+    padding-right: 36px;
+  }
+  input[type="date"] { min-height: var(--tap); }
+  input:focus, select:focus, textarea:focus {
+    outline: 3px solid var(--white);
+    outline-offset: 1px;
+    background: #1a1a00;
+  }
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  .opciones {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .opcion {
+    display: flex;
+    align-items: center;
+    background: #000;
+    padding: 14px 12px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text-soft);
+    min-height: var(--tap);
+    touch-action: manipulation;
+  }
+  .opcion:active, .opcion:focus-within {
+    background: #2a2a00;
+    border-color: var(--white);
+  }
+  .opcion.seleccionada {
+    background: #2a2a00;
+    border-color: var(--success);
+    color: var(--white);
+  }
+  .opcion input {
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    accent-color: var(--btn);
+    flex-shrink: 0;
+  }
+  .opcion span {
+    flex: 1;
+    line-height: 1.3;
+    word-break: break-word;
+  }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); border: 0;
+  }
+
+  /* —— Barra inferior fija (pulgar) —— */
+  .barra-acciones-fija {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 200;
+    background: rgba(10, 10, 10, 0.97);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 2px solid var(--border);
+    padding: 10px var(--pad) calc(10px + var(--safe-bottom));
+    box-shadow: 0 -6px 20px rgba(0,0,0,0.45);
+  }
+  #pantalla-entrevista.activa .barra-acciones-fija {
+    display: block;
+  }
+  .barra-acciones-fija .fila-acciones {
+    max-width: 920px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  /* Fila 1: Anterior | Omitir · Fila 2: Voz | Confirmar (más ancha) */
+  .barra-acciones-fija .btn-siguiente {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 0.95rem;
+    min-height: 52px;
+  }
+  .barra-acciones-fija #btn-microfono.voz-continua {
+    border-color: var(--success);
+    color: var(--success);
+  }
+  .barra-acciones-fija #btn-microfono {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .barra-acciones-fija button {
+    width: 100%;
+    font-size: 0.9rem;
+    padding: 12px 6px;
+    min-height: 50px;
+  }
+
+  /* —— Resumen —— */
+  .resumen-item {
+    border-bottom: 1px solid #333;
+    padding: 12px 0;
+  }
+  .resumen-item strong {
+    color: var(--text);
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+  .resumen-item span {
+    color: var(--text-soft);
+    font-size: 0.95rem;
+    word-break: break-word;
+  }
+  .resumen-item button {
+    margin-top: 8px;
+    min-height: 40px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    width: auto;
+  }
+  #pantalla-resumen .acciones {
+    margin-bottom: calc(8px + var(--safe-bottom));
+  }
+
+  /* —— PDF / impresión (formato oficial con cuadros, como ss.pdf) —— */
+  #plantilla-pdf { display: none; }
+
+  /* Modo captura PDF = misma plantilla que se imprime (html2canvas) */
+  #plantilla-pdf.exportando {
+    display: block !important;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 210mm !important;
+    max-width: 210mm !important;
+    min-height: 297mm;
+    z-index: 99990 !important;
+    background: #fff !important;
+    color: #000 !important;
+    padding: 8mm 10mm !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 9.5pt !important;
+    line-height: 1.3 !important;
+    box-sizing: border-box !important;
+    /* Fuera de vista del usuario, pero renderizable para captura */
+    transform: translateX(-120vw) !important;
+    pointer-events: none !important;
+  }
+  /* Durante captura real (en pantalla, sin mover) */
+  #plantilla-pdf.exportando.capturando {
+    transform: none !important;
+    left: 0 !important;
+    top: 0 !important;
+    z-index: 99990 !important;
+  }
+  #plantilla-pdf.exportando .seccion-titulo {
+    background: transparent !important;
+    color: #888 !important;
+    font-weight: bold !important;
+    font-size: 9pt !important;
+    padding: 8px 0 3px !important;
+    margin: 8px 0 3px !important;
+    border: none !important;
+    letter-spacing: 0.3px;
+  }
+  #plantilla-pdf.exportando td.label,
+  #plantilla-pdf.exportando th {
+    background: #f0f0f0 !important;
+    font-weight: bold !important;
+  }
+  #plantilla-pdf.exportando table {
+    page-break-inside: avoid;
+  }
+  #plantilla-pdf.exportando .pdf-header {
+    page-break-inside: avoid;
+  }
+  #plantilla-pdf.exportando .seccion-block {
+    page-break-inside: avoid;
+  }
+
+  /* Impresión: SOLO la plantilla (evita PDF/doble página con la UI) */
+  @media print {
+    html, body {
+      background: #fff !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+    body.imprimiendo-ficha > *:not(#plantilla-pdf) {
+      display: none !important;
+    }
+    body * { visibility: hidden !important; }
+    #plantilla-pdf, #plantilla-pdf * { visibility: visible !important; }
+    #plantilla-pdf {
+      display: block !important;
+      position: absolute !important;
+      left: 0 !important;
+      top: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      background: #fff !important;
+      color: #000 !important;
+      padding: 8mm 10mm !important;
+      font-size: 9.5pt !important;
+      font-family: Arial, sans-serif !important;
+      z-index: 99999 !important;
+      margin: 0 !important;
+    }
+    #plantilla-pdf .seccion-titulo {
+      background: transparent !important;
+      color: #888 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    #plantilla-pdf td.label {
+      background: #f0f0f0 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .barra-acciones-fija, .barra-superior, #pantalla-inicio, #pantalla-entrevista, #pantalla-resumen {
+      display: none !important;
+    }
+    @page { size: A4; margin: 8mm; }
+  }
+
+  .ficha-pdf {
+    color: #000;
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    line-height: 1.3;
+  }
+  .ficha-pdf .pdf-header {
+    text-align: center;
+    border: 2px solid #000;
+    padding: 8px;
+    margin-bottom: 8px;
+  }
+  .ficha-pdf .pdf-header .logo-pdf {
+    background: #000;
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
+  .ficha-pdf .pdf-header img {
+    max-height: 55px;
+    display: block;
+  }
+  .ficha-pdf h1 {
+    font-size: 13pt;
+    margin: 4px 0;
+    letter-spacing: 0.5px;
+  }
+  .ficha-pdf .seccion-titulo {
+    background: transparent;
+    color: #888;
+    font-weight: bold;
+    padding: 8px 0 3px;
+    margin: 8px 0 3px;
+    font-size: 9pt;
+  }
+  .ficha-pdf table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 3px;
+  }
+  .ficha-pdf td, .ficha-pdf th {
+    border: 1px solid #000;
+    padding: 3px 5px;
+    vertical-align: middle;
+  }
+  .ficha-pdf .label {
+    font-weight: bold;
+    width: 26%;
+    background: #f0f0f0;
+  }
+  .ficha-pdf .check { white-space: nowrap; }
+  .ficha-pdf .obs {
+    min-height: 40px;
+    white-space: pre-wrap;
+  }
+  .ficha-pdf .fam-table th {
+    background: #eee;
+    font-size: 8pt;
+    text-align: center;
+  }
+  .ficha-pdf .fam-table td { font-size: 8.5pt; }
+  .ficha-pdf .pie {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .ficha-pdf .firma-box {
+    border: 1px solid #000;
+    min-height: 70px;
+    padding: 6px;
+  }
+
+  /* ── Teléfono grande / landscape ── */
+  @media (min-width: 480px) {
+    :root { --pad: 16px; }
+    body { font-size: 17px; }
+    .logo-wrap img { width: min(240px, 60vw); }
+    .cabecera h1 { font-size: 1.5rem; }
+    .pregunta-texto { font-size: 1.25rem; }
+    .barra-logo img { height: 36px; }
+    .barra-logo span { font-size: 0.95rem; }
+  }
+
+  /* ── Tablet ── */
+  @media (min-width: 768px) {
+    :root {
+      --pad: 20px;
+      --tap: 52px;
+      --acciones-h: 84px;
+    }
+    body { font-size: 18px; }
+    .pantalla {
+      padding: calc(20px + var(--safe-top)) var(--pad) calc(32px + var(--safe-bottom));
+    }
+    #pantalla-entrevista.activa {
+      padding-bottom: calc(var(--acciones-h) + var(--safe-bottom) + 20px);
+      padding-top: 0;
+    }
+    .logo-wrap {
+      padding: 14px 22px;
+      border-width: 3px;
+      border-radius: 16px;
+    }
+    .logo-wrap img { width: 260px; }
+    .cabecera h1 { font-size: 1.7rem; }
+    .tarjeta {
+      padding: 22px;
+      border-width: 3px;
+      border-radius: 16px;
+      margin: 16px 0;
+    }
+    .tarjeta h2 { font-size: 1.3rem; }
+    .acciones-inicio {
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .barra-inner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .barra-controles {
+      flex-wrap: wrap;
+      overflow: visible;
+    }
+    .barra-controles button {
+      font-size: 0.9rem;
+      min-height: 44px;
+      padding: 8px 12px;
+    }
+    .barra-logo img { height: 42px; }
+    .pregunta-card {
+      padding: 24px;
+      border-width: 3px;
+      border-radius: 16px;
+    }
+    .pregunta-texto { font-size: 1.4rem; }
+    .mensaje-voz { font-size: 1rem; padding: 14px 16px; }
+    input[type="text"], input[type="number"], input[type="tel"],
+    input[type="date"], select, textarea {
+      font-size: 18px;
+      padding: 15px;
+      border-width: 3px;
+    }
+    .opcion {
+      padding: 16px;
+      font-size: 1.05rem;
+      border-width: 3px;
+    }
+    .barra-acciones-fija .fila-acciones {
+      grid-template-columns: auto auto 1fr 1.4fr;
+      align-items: center;
+    }
+    .barra-acciones-fija #btn-microfono,
+    .barra-acciones-fija .btn-siguiente {
+      grid-column: auto;
+      grid-row: auto;
+    }
+    .barra-acciones-fija button {
+      width: auto;
+      min-width: 110px;
+      font-size: 0.95rem;
+    }
+    .barra-acciones-fija .btn-siguiente {
+      min-width: 180px;
+      justify-self: stretch;
+    }
+    #pantalla-resumen .acciones {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    #pantalla-resumen .acciones button {
+      width: auto;
+      min-width: 180px;
+    }
+  }
+
+  /* ── Escritorio ── */
+  @media (min-width: 1024px) {
+    body { font-size: 19px; }
+    .contenedor { padding: 0 8px; }
+    .pregunta-texto { font-size: 1.5rem; }
+    button:hover { cursor: pointer; }
+  }
+
+  /* ── Landscape celular: menos altura de barra ── */
+  @media (max-height: 480px) and (orientation: landscape) {
+    :root { --acciones-h: 64px; }
+    .barra-acciones-fija .fila-acciones {
+      grid-template-columns: 1fr 1fr 1fr 1.3fr;
+    }
+    .barra-acciones-fija #btn-microfono,
+    .barra-acciones-fija .btn-siguiente {
+      grid-column: auto;
+      grid-row: auto;
+    }
+    .barra-acciones-fija button {
+      min-height: 42px;
+      font-size: 0.8rem;
+      padding: 6px;
+    }
+    .barra-logo span { display: none; }
+    .progreso-box { padding: 6px 10px; margin: 8px 0; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Saltar al contenido</a>
+
+<!-- ========== PANTALLA 0: BIENVENIDA ========== -->
+<div id="pantalla-inicio" class="pantalla activa" role="main">
+  <div class="contenedor">
+    <header class="cabecera">
+      <div class="logo-wrap">
+        <img src="logo-blanco-uncp-scaled.webp" alt="Logo Unión Nacional de Ciegos del Perú - UNCP" width="280" height="auto">
+      </div>
+      <h1>Ficha Social UNCP</h1>
+      <p class="subtitulo">Unión Nacional de Ciegos del Perú</p>
+    </header>
+
+    <div class="tarjeta destacada">
+      <h2>🤝 Se recomienda un acompañante</h2>
+      <p>
+        Esta ficha está pensada para que una <strong>persona de apoyo</strong>
+        (familiar, amigo o personal de la UNCP) guíe la entrevista
+        junto con el socio o socia.
+      </p>
+      <p>
+        Por defecto <strong>no hay narrador</strong> (solo texto en pantalla).
+        Si lo necesita, puede activar la <strong>lectura en voz alta</strong> al comenzar o desde la barra.
+        Las respuestas se dan por <strong>teclado</strong> o, si lo activa, por <strong>micrófono</strong>.
+      </p>
+    </div>
+
+    <div class="tarjeta">
+      <h2>Cómo funciona</h2>
+      <ul>
+        <li><strong>Por defecto sin narrador:</strong> solo lectura en pantalla (no suena nada).</li>
+        <li>Opcional: «Comenzar con voz» para que el sistema lea cada pregunta en voz alta.</li>
+        <li>También puede activar o desactivar la voz con el botón de la barra durante la entrevista.</li>
+        <li><strong>Micrófono (opcional):</strong> pulse 🎤 Activar voz una vez; luego puede escuchar solo en cada pregunta.</li>
+        <li><strong>Opciones</strong> (sí/no, sexo…): elija en pantalla o diga la respuesta si usa micrófono.</li>
+        <li>Al final se guarda en <strong>Google Sheets</strong> y el <strong>PDF en Google Drive</strong>.</li>
+      </ul>
+      <p id="aviso-voz" class="mensaje-voz aviso" style="margin-top:12px;" hidden role="status"></p>
+      <p style="margin-top:10px;color:var(--text-soft);font-size:0.95rem;">
+        <strong>Importante:</strong> para el <em>micrófono</em> (solo si lo usa), abra la app con
+        <strong>Abrir entrevista.bat</strong> y use <strong>Chrome</strong> o <strong>Edge</strong>.
+        El modo sin voz no necesita micrófono ni altavoz.
+      </p>
+    </div>
+
+    <div class="acciones-inicio" role="group" aria-label="Elegir modo de entrevista">
+      <button type="button" class="exito" id="btn-empezar-sin-voz" onclick="iniciarEntrevista(false)"
+        aria-label="Comenzar entrevista sin narrador, solo texto en pantalla (recomendado)">
+        <span class="btn-modo-titulo">📝 Comenzar sin voz</span>
+        <span class="btn-modo-desc">Por defecto · solo pantalla · sin narrador</span>
+      </button>
+      <button type="button" class="secundario" id="btn-empezar-con-voz" onclick="iniciarEntrevista(true)"
+        aria-label="Comenzar entrevista con lectura en voz alta (opcional)">
+        <span class="btn-modo-titulo">🔊 Comenzar con voz</span>
+        <span class="btn-modo-desc">Opcional · el sistema lee cada pregunta</span>
+      </button>
+      <button type="button" class="secundario" onclick="leerBienvenida()" id="btn-escuchar-instrucciones">
+        🔊 Escuchar instrucciones (opcional)
+      </button>
+      <button type="button" class="secundario" id="btn-cargar-inicio" onclick="cargarBorradorYContinuar()" style="display:none;">
+        📂 Continuar borrador guardado
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PANTALLA 1: ENTREVISTA ========== -->
+<div id="pantalla-entrevista" class="pantalla" aria-live="polite">
+  <div class="barra-superior">
+    <div class="barra-inner">
+      <div class="barra-logo">
+        <img src="logo-blanco-uncp-scaled.webp" alt="">
+        <span>Ficha Social UNCP</span>
+      </div>
+      <div class="barra-controles" role="toolbar" aria-label="Controles">
+        <button type="button" class="secundario ctrl-solo-voz" onclick="repetirPregunta()" aria-label="Repetir pregunta">🔊</button>
+        <button type="button" class="secundario ctrl-solo-voz" onclick="pausarVoz()" aria-label="Pausar voz">⏸</button>
+        <button type="button" class="secundario ctrl-solo-voz" onclick="cambiarVelocidad()" aria-label="Velocidad de voz">⏩</button>
+        <button type="button" class="secundario" onclick="aumentarFuente()" aria-label="Aumentar letra">A+</button>
+        <button type="button" class="secundario" onclick="disminuirFuente()" aria-label="Disminuir letra">A−</button>
+        <button type="button" class="secundario" onclick="guardarBorrador()" aria-label="Guardar borrador">💾</button>
+        <button type="button" class="secundario" id="btn-toggle-lectura" onclick="alternarLecturaVoz()"
+          aria-label="Activar o desactivar lectura en voz alta" title="Activar o desactivar lectura en voz alta">
+          🔇 Sin voz
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="contenedor" id="main">
+    <div class="progreso-box" role="region" aria-label="Progreso">
+      <div class="progreso-texto" id="progreso-texto">Pregunta 1 de …</div>
+      <div class="progreso-barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progreso-bar">
+        <div class="progreso-fill" id="progreso-fill"></div>
+      </div>
+    </div>
+
+    <div class="mensaje-voz" id="mensaje-voz" role="status" aria-live="assertive">
+      💬 Preparando entrevista…
+    </div>
+
+    <div class="pregunta-card" id="pregunta-card">
+      <div class="seccion-etiqueta" id="seccion-etiqueta">I. Datos Generales</div>
+      <div class="pregunta-numero" id="pregunta-numero">Pregunta 1</div>
+      <h2 class="pregunta-texto" id="pregunta-texto">…</h2>
+      <p class="pregunta-ayuda" id="pregunta-ayuda"></p>
+
+      <div class="zona-respuesta" id="zona-respuesta">
+        <!-- se genera dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Acciones fijas al pulgar (móvil) -->
+  <div class="barra-acciones-fija" role="group" aria-label="Acciones de la pregunta">
+    <div class="fila-acciones">
+      <button type="button" class="secundario" id="btn-anterior" onclick="preguntaAnterior()">
+        ⬅ Anterior
+      </button>
+      <button type="button" class="secundario" onclick="saltarPregunta()">
+        Omitir
+      </button>
+      <button type="button" class="voz" id="btn-microfono" onclick="toggleMicrofono()"
+        title="Active el micrófono una sola vez. Luego escucha sola tras cada pregunta."
+        aria-label="Activar voz. Solo una vez: luego el micrófono escucha solo después de cada pregunta">
+        🎤 Activar voz
+      </button>
+      <button type="button" class="exito btn-siguiente" id="btn-siguiente" onclick="confirmarYSiguiente()">
+        Confirmar ➡
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PANTALLA 2: RESUMEN Y PDF ========== -->
+<div id="pantalla-resumen" class="pantalla">
+  <div class="contenedor">
+    <header class="cabecera">
+      <div class="logo-wrap">
+        <img src="logo-blanco-uncp-scaled.webp" alt="Logo UNCP">
+      </div>
+      <h1>Entrevista completa</h1>
+      <p class="subtitulo">Se guarda en la nube: hoja + PDF + Excel (misma ficha). También puede descargar localmente.</p>
+    </header>
+
+    <div class="mensaje-voz" id="mensaje-resumen" role="status">☁ Guardando la ficha…</div>
+
+    <!-- Vista normal (usuarios / entrevista) -->
+    <div class="tarjeta destacada" id="tarjeta-google-sheets">
+      <h2>☁ Guardar ficha</h2>
+      <p id="estado-sheets" style="margin-bottom:10px;">
+        Al terminar se guarda en la nube (hoja y archivos).
+      </p>
+      <div class="acciones" style="margin-top:8px;">
+        <button type="button" class="exito" id="btn-guardar-sheets" onclick="enviarAGoogleSheets()">☁ Guardar ficha en la nube</button>
+      </div>
+    </div>
+
+    <!-- Solo admin: diagnóstico, URL, hoja, carpeta -->
+    <div class="tarjeta" id="panel-admin" style="display:none;border-color:var(--info);">
+      <h2>🔐 Panel administrador</h2>
+      <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:8px;">
+        Diagnóstico, URL del script, hoja y carpeta Drive. No visible para el socio.
+      </p>
+      <div id="aviso-script-viejo" class="mensaje-voz aviso" style="display:none;margin:10px 0;" role="alert"></div>
+      <div id="config-sheets-box" style="display:none;margin:10px 0;">
+        <label for="input-sheets-url" style="display:block;margin-bottom:6px;color:var(--text-soft);font-size:0.95rem;">
+          URL de la aplicación web (Apps Script) — termina en /exec
+        </label>
+        <input type="url" id="input-sheets-url" placeholder="https://script.google.com/macros/s/…/exec"
+          style="width:100%;padding:12px;border-radius:10px;border:2px solid var(--border);background:var(--surface2);color:var(--text);font-size:1rem;margin-bottom:8px;">
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <button type="button" class="exito" onclick="guardarUrlSheets()">💾 Guardar URL</button>
+          <button type="button" class="secundario" onclick="toggleConfigSheets(false)">Cerrar URL</button>
+        </div>
+      </div>
+      <div class="acciones" style="margin-top:8px;">
+        <button type="button" class="secundario" onclick="diagnosticarPdfDrive()">🔎 Diagnosticar</button>
+        <button type="button" class="secundario" onclick="toggleConfigSheets()">⚙ URL / config</button>
+        <a class="btn secundario" id="admin-link-hoja" href="https://docs.google.com/spreadsheets/d/1obx8kVIXXxk2P65LVXxHju3I1iUf3SsPgozlxKmZ5ek/edit" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">↗ Hoja</a>
+        <a class="btn secundario" id="admin-link-drive" href="https://drive.google.com/drive/folders/1dqy2HuWf6IYVGasuyrtff2id7Jf3aRXv" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">↗ Carpeta PDF/Excel/Word</a>
+        <button type="button" class="secundario" onclick="salirModoAdmin()">Salir de admin</button>
+      </div>
+    </div>
+
+    <div class="tarjeta">
+      <h2>Resumen de respuestas</h2>
+      <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:8px;">
+        Puede editar <strong>cualquier pregunta</strong> con el botón Editar (también las vacías u omitidas).
+      </p>
+      <div id="lista-resumen"></div>
+    </div>
+
+    <div class="acciones">
+      <button type="button" class="secundario" onclick="volverAPregunta(0)">✏ Editar desde el inicio</button>
+      <button type="button" class="exito" onclick="enviarAGoogleSheets()">☁ Guardar ficha en la nube</button>
+      <button type="button" class="secundario" onclick="generarPDF()">📄 Descargar PDF</button>
+      <button type="button" class="secundario" onclick="imprimirPlantillaPdfLocal()">🖨 Imprimir ficha</button>
+      <button type="button" class="secundario" onclick="generarExcel()">📊 Descargar Excel</button>
+      <button type="button" onclick="nuevaFicha()">🗒 Nueva ficha</button>
+    </div>
+
+    <!-- Entrada discreta a admin: 5 clics en el pie -->
+    <p id="admin-entry" style="margin-top:20px;text-align:center;color:var(--muted);font-size:0.75rem;cursor:default;user-select:none;"
+       title="Admin" onclick="intentoEntrarAdmin()">
+      UNCP · Ficha social
+    </p>
+  </div>
+</div>
+
+<!-- ========== PLANTILLA PDF (formato Ficha JULIO 2026) ========== -->
+<div id="plantilla-pdf" class="ficha-pdf" aria-hidden="true">
+  <div class="pdf-header">
+    <div class="logo-pdf">
+      <img src="logo-blanco-uncp-scaled.webp" alt="UNCP">
+    </div>
+    <h1>FICHA SOCIAL UNCP</h1>
+    <div>Unión Nacional de Ciegos del Perú — Formato oficial</div>
+  </div>
+
+  <div class="seccion-titulo">I. DATOS GENERALES DEL SOCIO(A)</div>
+  <table>
+    <tr>
+      <td class="label">APELLIDOS Y NOMBRES</td>
+      <td colspan="5" id="pdf-nombres"></td>
+    </tr>
+    <tr>
+      <td class="label">N° DNI / CARNÉT</td>
+      <td id="pdf-dni"></td>
+      <td class="label">FECHA DE NACIMIENTO</td>
+      <td id="pdf-fecha-nac"></td>
+      <td class="label">EDAD</td>
+      <td id="pdf-edad"></td>
+    </tr>
+    <tr>
+      <td class="label">SEXO</td>
+      <td colspan="5" id="pdf-sexo" class="check"></td>
+    </tr>
+    <tr>
+      <td class="label">LUGAR DE NACIMIENTO</td>
+      <td>DEP: <span id="pdf-depto"></span></td>
+      <td colspan="2">PROV: <span id="pdf-prov"></span></td>
+      <td colspan="2">DIST: <span id="pdf-dist"></span></td>
+    </tr>
+    <tr>
+      <td class="label">ESTADO CIVIL</td>
+      <td colspan="5" id="pdf-estado-civil" class="check"></td>
+    </tr>
+    <tr>
+      <td class="label">DIRECCIÓN ACTUAL</td>
+      <td colspan="5" id="pdf-direccion"></td>
+    </tr>
+    <tr>
+      <td class="label">REFERENCIA</td>
+      <td colspan="3" id="pdf-referencia"></td>
+      <td class="label">NIVEL EDUCATIVO</td>
+      <td id="pdf-instruccion"></td>
+    </tr>
+    <tr>
+      <td class="label">CELULAR</td>
+      <td colspan="2" id="pdf-telefono"></td>
+      <td class="label">CORREO ELECTRÓNICO</td>
+      <td colspan="2" id="pdf-correo"></td>
+    </tr>
+  </table>
+
+  <div style="font-weight:bold; margin:8px 0 4px;">CONTACTO DE EMERGENCIA</div>
+  <table>
+    <tr>
+      <td class="label">CONTACTO 1 — NOMBRE</td>
+      <td id="pdf-c1-nombre"></td>
+      <td class="label">PARENTESCO</td>
+      <td id="pdf-c1-par"></td>
+      <td class="label">CELULAR</td>
+      <td id="pdf-c1-cel"></td>
+    </tr>
+    <tr>
+      <td class="label">CONTACTO 2 — NOMBRE</td>
+      <td id="pdf-c2-nombre"></td>
+      <td class="label">PARENTESCO</td>
+      <td id="pdf-c2-par"></td>
+      <td class="label">CELULAR</td>
+      <td id="pdf-c2-cel"></td>
+    </tr>
+  </table>
+
+  <div class="seccion-titulo">II. CARACTERIZACIÓN FAMILIAR</div>
+  <table>
+    <tr>
+      <td class="label">¿ES USTED PADRE O MADRE?</td>
+      <td id="pdf-padre-madre"></td>
+      <td class="label">N° TOTAL DE HIJOS</td>
+      <td id="pdf-n-hijos"></td>
+      <td class="label">N° HIJOS CON DISC. VISUAL</td>
+      <td id="pdf-n-hijos-disc"></td>
+      <td class="label">Edades de Hijos TOTAL DE HIJOS</td>
+      <td id="pdf-n-hijosEdad"></td>
+    </tr>
+    <tr>
+      <td class="label">OTROS FAMILIARES CON DISCAPACIDAD VISUAL</td>
+      <td colspan="5" id="pdf-otros-fam-disc"></td>
+    </tr>
+  </table>
+
+  <div class="seccion-titulo">III. COMPOSICIÓN DEL NÚCLEO FAMILIAR</div>
+  <table class="fam-table">
+    <thead>
+      <tr>
+        <th>APELLIDOS Y NOMBRES</th>
+        <th>PARENTESCO</th>
+        <th>EDAD</th>
+        <th>NIVEL EDUCATIVO</th>
+        <th>OCUPACIÓN</th>
+        <th>¿APORTA INGRESOS?</th>
+        <th>DISCAPACIDAD / ENFERMEDAD</th>
+      </tr>
+    </thead>
+    <tbody id="pdf-familia-body"></tbody>
+  </table>
+  <table>
+    <tr>
+      <td class="label">TIPO DE FAMILIA</td>
+      <td colspan="5" id="pdf-tipo-familia" class="check"></td>
+    </tr>
+  </table>
+
+  <div class="seccion-titulo">IV. APRECIACIÓN DEL NÚCLEO FAMILIAR</div>
+  <table>
+    <tr>
+      <td class="label">RELACIONES FAMILIARES</td>
+      <td colspan="5" id="pdf-relaciones" class="check"></td>
+    </tr>
+    <tr>
+      <td class="label">COMUNICACIÓN FAMILIAR</td>
+      <td colspan="5" id="pdf-comunicacion" class="check"></td>
+    </tr>
+    <tr>
+      <td class="label">PRINCIPAL RED DE APOYO</td>
+      <td colspan="5" id="pdf-red-apoyo"></td>
+    </tr>
+    <tr>
+      <td class="label">APRECIACIÓN PROFESIONAL</td>
+      <td colspan="5" class="obs" id="pdf-apreciacion"></td>
+    </tr>
+  </table>
+
+  <div class="seccion-titulo">V. CONDICIÓN DE DISCAPACIDAD VISUAL</div>
+  <table>
+    <tr>
+      <td class="label">CONDICIÓN</td>
+      <td colspan="2" id="pdf-tipo-disc" class="check"></td>
+      <td class="label">ORIGEN</td>
+      <td colspan="2" id="pdf-origen" class="check"></td>
+    </tr>
+    <tr>
+      <td class="label">EDAD DE ADQUISICIÓN</td>
+      <td id="pdf-edad-adq"></td>
+      <td class="label">CERTIFICADO DE DISCAPACIDAD</td>
+      <td id="pdf-certificado"></td>
+      <td class="label">CARNET CONADIS</td>
+      <td id="pdf-conadis"></td>
+    </tr>
+    <tr>
+      <td class="label">ATENCIÓN OFTALMOLÓGICA</td>
+      <td colspan="2" id="pdf-atencion" class="check"></td>
+      <td class="label">LUGAR / INSTITUCIÓN</td>
+      <td colspan="2" id="pdf-lugar-atencion"></td>
+    </tr>
+  </table>
+
+  <div class="seccion-titulo">VI. ESTADO DE SALUD</div>
+  <table>
+    <tr>
+      <td class="label">SEGURO DE SALUD</td>
+      <td colspan="5" id="pdf-seguro" class="check"></td>
+    </tr>
+    <tr>
+      <td class="label">ENFERMEDADES CRÓNICAS</td>
+      <td colspan="5" class="obs" id="pdf-cronicas"></td>
+    </tr>
+    <tr>
+      <td class="label">AUTONOMÍA FUNCIONAL Y MOVILIDAD</td>
+      <td colspan="5" id="pdf-autonomia" class="check"></td>
+    </tr>
+  </table>
+
+  <div class="seccion-titulo">VII. SITUACIÓN LABORAL Y ECONÓMICA</div>
+  <table>
+    <tr>
+      <td class="label">INGRESO MENSUAL APROXIMADO</td>
+      <td colspan="5" id="pdf-ingreso" class="check"></td>
+    </tr>
+    <tr>
+      <td class="label">¿LABORA ACTUALMENTE?</td>
+      <td id="pdf-laborando"></td>
+      <td class="label">OCUPACIÓN</td>
+      <td id="pdf-ocupacion"></td>
+      <td class="label">PROFESIÓN U OFICIO</td>
+      <td id="pdf-profesion"></td>
+    </tr>
+    <tr>
+      <td class="label">FUENTE PRINCIPAL DE INGRESOS</td>
+      <td colspan="5" id="pdf-fuente" class="check"></td>
+    </tr>
+    <tr>
+      <td class="label">¿OTROS INGRESOS EN EL HOGAR?</td>
+      <td id="pdf-otros-ingresos"></td>
+      <td class="label">PRINCIPAL APORTANTE ECONÓMICO</td>
+      <td colspan="3" id="pdf-aportante"></td>
+    </tr>
+    <tr>
+      <td class="label">CLASIFICACIÓN SISFOH</td>
+      <td colspan="5" id="pdf-sisfoh" class="check"></td>
+    </tr>
+  </table>
+
+  <div class="seccion-titulo">VIII. CONDICIÓN DE VIVIENDA</div>
+  <table>
+    <tr>
+      <td class="label">TENENCIA DE LA VIVIENDA</td>
+      <td colspan="5" id="pdf-tenencia" class="check"></td>
+    </tr>
+    <tr>
+      <td class="label">TIPO DE VIVIENDA</td>
+      <td colspan="5" id="pdf-tipo-vivienda" class="check"></td>
+    </tr>
+    <tr>
+      <td class="label">NUMERO TOTAL DE AMBIENTES UTILIZADOS PARA DORMIR, no incluir cocina, baños, pasillos </td>
+      <td id="pdf-ambientes"></td>
+      <td class="label">DISTRIBUCIÓN</td>
+      <td colspan="3" id="pdf-distribucion" class="check"></td>
+    </tr>
+    <tr>
+      <td class="label">SERVICIOS BÁSICOS</td>
+      <td colspan="5" id="pdf-servicios" class="check"></td>
+    </tr>
+    <tr>
+      <td class="label">ACCESIBILIDAD EN EL HOGAR</td>
+      <td colspan="2" id="pdf-barreras" class="check"></td>
+      <td class="label">ESPECIFICAR</td>
+      <td colspan="2" id="pdf-barreras-esp"></td>
+    </tr>
+    <tr>
+      <td class="label">DIAGNÓSTICO SOCIAL</td>
+      <td colspan="5" class="obs" id="pdf-diagnostico"></td>
+    </tr>
+    <tr>
+      <td class="label">DERECHO DE MORTUORIA</td>
+      <td colspan="5" class="obs" id="pdf-mortuoria"></td>
+    </tr>
+  </table>
+
+  <div class="seccion-titulo">REGISTRO ADMINISTRATIVO</div>
+  <div class="pie">
+    <div>
+      <div><strong>FECHA DE ENTREVISTA:</strong> <span id="pdf-fecha-ent"></span></div>
+      <div style="margin-top:10px;"><strong>PROFESIONAL RESPONSABLE:</strong> <span id="pdf-profesional"></span></div>
+    </div>
+    <div class="firma-box">
+      <strong>FIRMA O HUELLA DEL SOCIO:</strong>
+      <div id="pdf-firma" style="margin-top:8px;"></div>
+    </div>
+  </div>
+</div>
+
+<script src="exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="plantilla-ficha.js"></script>
+<script src="ficha-entrevista.js"></script>
+
+</body>
+</html>
